@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Guard Hours</title>
+  <link rel="stylesheet" href="calculator.css">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="8.25"></circle>
+            <path d="M12 7.4V12l3 1.9"></path>
+            <path d="M18.4 5.6 20 4"></path>
+          </svg>
+        </span>
+        <div class="brand__text">
+          <h1>Guard Hours</h1>
+          <p>Shift, breaks, payroll decimal</p>
+        </div>
+      </div>
+      <button id="openTab" class="icon-btn" type="button" title="Open in a tab" aria-label="Open in a tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 4h6v6"></path>
+          <path d="M20 4 11 13"></path>
+          <path d="M9 5H5.5A1.5 1.5 0 0 0 4 6.5v12A1.5 1.5 0 0 0 5.5 20h12a1.5 1.5 0 0 0 1.5-1.5V15"></path>
+        </svg>
+      </button>
+    </header>
+
+    <section class="card">
+      <div class="card__head">
+        <div>
+          <h2>Shift</h2>
+          <p class="card__sub">The window every time is measured inside.</p>
+        </div>
+        <span id="shiftWindow" class="pill">7:00 PM – 4:00 AM</span>
+      </div>
+      <div class="grid grid--2">
+        <label class="field">
+          <span>Shift ends</span>
+          <input id="shiftEnd" type="time" step="60" value="04:00">
+        </label>
+        <label class="field">
+          <span>Scheduled hours</span>
+          <input id="scheduledHours" type="number" min="0.25" max="24" step="0.25" value="9" inputmode="decimal">
+        </label>
+      </div>
+      <p id="shiftHint" class="hint">Shift starts at 7:00 PM. Times can be entered as 9:30, 9:30 PM, or 21:30.</p>
+    </section>
+
+    <section class="card">
+      <div class="card__head">
+        <div>
+          <h2>Breaks</h2>
+          <p class="card__sub">Add one row for each break.</p>
+        </div>
+        <button id="addBreak" class="btn btn--small btn--soft" type="button">+ Add break</button>
+      </div>
+      <div id="breakList" class="break-list"></div>
+      <p id="noBreaks" class="empty">No breaks added.</p>
+    </section>
+
+    <section class="card card--leave">
+      <label class="field">
+        <span>Time left</span>
+        <input id="leaveTime" type="text" placeholder="3:30 AM" autocomplete="off" spellcheck="false" inputmode="text">
+      </label>
+      <p id="leaveHint" class="hint">Shift ends at 4:00 AM.</p>
+    </section>
+
+    <section class="result" id="result" aria-live="polite">
+      <div class="result__block">
+        <span class="result__label">Total worked</span>
+        <strong id="workedHM">—</strong>
+        <span id="workedMinutes" class="result__sub">Enter the time left</span>
+      </div>
+      <div class="result__divider" aria-hidden="true"></div>
+      <div class="result__block result__block--pay">
+        <span class="result__label">Payroll decimal</span>
+        <strong id="payrollDecimal">—</strong>
+        <span id="payrollNote" class="result__sub">Minutes → hundredths</span>
+      </div>
+    </section>
+
+    <section class="breakdown" aria-label="Calculation breakdown">
+      <div class="breakdown__row">
+        <span>Scheduled</span>
+        <strong id="scheduledOut">9h 0m</strong>
+        <em id="scheduledDec">9.00</em>
+      </div>
+      <div class="breakdown__row">
+        <span>Breaks</span>
+        <strong id="breaksOut">0h 0m</strong>
+        <em id="breaksDec">0.00</em>
+      </div>
+      <div class="breakdown__row">
+        <span>Left early</span>
+        <strong id="earlyOut">0h 0m</strong>
+        <em id="earlyDec">0.00</em>
+      </div>
+      <p id="formula" class="formula">—</p>
+    </section>
+
+    <p id="message" class="message" role="status" aria-live="polite"></p>
+
+    <div class="actions">
+      <button id="copyButton" class="btn btn--primary" type="button" disabled>Copy result</button>
+      <button id="resetButton" class="btn btn--ghost" type="button">Clear times</button>
+    </div>
+
+    <details class="chart">
+      <summary>
+        <span>Minute conversion chart</span>
+        <span class="chart__note">1–60 minutes → hundredths</span>
+      </summary>
+      <div id="chartGrid" class="chart__grid"></div>
+    </details>
+
+    <footer class="foot">
+      <span>Local only. No account, no network.</span>
+      <span>Review every result before payroll.</span>
+    </footer>
+  </main>
+  <script src="calculator.js"></script>
+</body>
+</html>

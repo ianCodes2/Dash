@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Goals — Northstar</title>
+  <meta name="description" content="A calm, private tracker for savings goals and weight goals.">
+  <meta name="theme-color" content="#f5f3ee">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Northstar Goals">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-extra.css">
+  <link rel="stylesheet" href="../../shared/gate.css">
+  <script>
+    (() => {
+      try {
+        const raw = localStorage.getItem('northstar.theme.v1');
+        let choice = raw || 'system';
+        const dark = choice === 'dark' || (choice === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      } catch (error) { /* storage unavailable */ }
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#view">Skip to content</a>
+
+  <section class="auth" id="authScreen" aria-label="Unlock Northstar">
+    <div id="authCard"></div>
+  </section>
+
+  <div class="app-shell" id="appShell" hidden>
+    <header class="appbar">
+      <div class="appbar__inner">
+        <a class="brand" href="../../index.html" aria-label="Back to the Northstar hub" title="Back to hub">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 1.8c.4 3.9 1.4 6.6 3.5 8.7 2.1 2.1 4.8 3.1 8.7 3.5-3.9.4-6.6 1.4-8.7 3.5-2.1 2.1-3.1 4.8-3.5 8.7-.4-3.9-1.4-6.6-3.5-8.7-2.1-2.1-4.8-3.1-8.7-3.5 3.9-.4 6.6-1.4 8.7-3.5C10.6 8.4 11.6 5.7 12 1.8Z"/>
+            </svg>
+          </span>
+          <span class="brand__text">
+            <span class="brand__name">Northstar</span>
+            <span class="brand__tag">Goals</span>
+          </span>
+        </a>
+
+        <nav class="appnav" id="appNav" aria-label="Trackers">
+          <a class="appnav__link" id="navSavings" href="#/savings/ian">
+            <span class="appnav__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8"/><path d="M9 3v3M15 3v3"/><path d="M7 6h10a2 2 0 0 1 2 2v10a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8a2 2 0 0 1 2-2Z"/><path d="M5 11h14"/></svg>
+            </span>
+            <span>Savings</span>
+          </a>
+          <a class="appnav__link" id="navWeight" href="#/weight/ian">
+            <span class="appnav__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 15a4 4 0 0 1 8 0"/><path d="m12 11 2.5-3"/></svg>
+            </span>
+            <span>Weight</span>
+          </a>
+        </nav>
+
+        <div class="appbar__actions">
+          <button class="icon-btn" id="lockButton" type="button" data-action="lock-app" aria-label="Lock Northstar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="4" y="10" width="16" height="11" rx="2.5"/>
+              <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+              <path d="M12 15v2"/>
+            </svg>
+          </button>
+          <button class="icon-btn" id="themeToggle" type="button" data-action="toggle-theme" aria-label="Switch theme"></button>
+          <a class="icon-btn" id="settingsLink" href="#/settings" aria-label="Settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3.2"/>
+              <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.9 19.3a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.7 15a1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.7 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.7h.01A1.7 1.7 0 0 0 10 3.14V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.01A1.7 1.7 0 0 0 20.86 10H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1Z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="appbar__sub">
+        <div id="personSwitch"></div>
+      </div>
+    </header>
+
+    <div class="sync-banner" id="syncBanner" role="status" hidden>
+      <span id="syncBannerText"></span>
+      <span class="sync-banner__actions">
+        <button class="btn btn--soft btn--sm" type="button" data-action="reload-cloud">Reload latest</button>
+        <button class="btn btn--ghost btn--sm" type="button" data-action="save-mine">Keep mine</button>
+      </span>
+    </div>
+
+    <main id="view" class="view" tabindex="-1"></main>
+
+    <footer class="appfoot">
+      <span id="syncStatus">Connecting…</span>
+      <span class="appfoot__links">
+        <a href="../../index.html">Hub</a>
+        <a href="#/settings">Settings</a>
+      </span>
+    </footer>
+  </div>
+
+  <noscript>
+    <div class="noscript">Northstar needs JavaScript enabled to track your savings and weigh-ins.</div>
+  </noscript>
+
+  <!-- New / edit savings goal -->
+  <dialog id="jarDialog" class="sheet" aria-labelledby="jarDialogTitle">
+    <form id="jarForm" class="sheet__form" novalidate>
+      <div class="sheet__grab" aria-hidden="true"></div>
+      <div class="sheet__head">
+        <div>
+          <h2 id="jarDialogTitle">New savings goal</h2>
+          <p id="jarDialogSubtitle">Give this goal a name and a target.</p>
+        </div>
+        <button type="button" class="icon-btn" data-close="jarDialog" aria-label="Close">✕</button>
+      </div>
+      <div class="sheet__body">
+        <input type="hidden" id="jarPersonId">
+        <input type="hidden" id="jarId">
+        <label class="field">
+          <span class="field__label">Goal name</span>
+          <input class="input" id="jarName" type="text" maxlength="60" placeholder="e.g. Emergency fund" autocomplete="off">
+        </label>
+        <label class="field">
+          <span class="field__label">Target amount</span>
+          <span class="money-field">
+            <span class="money-field__symbol" id="jarCurrencySymbol">$</span>
+            <input class="input money-field__input" id="jarTarget" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="5,000">
+          </span>
+        </label>
+        <label class="field">
+          <span class="field__label">Target date <span class="field__optional">Optional</span></span>
+          <input class="input" id="jarTargetDate" type="date">
+          <span class="hint">Used to estimate how much to put aside each month.</span>
+        </label>
+        <div class="field">
+          <span class="field__label">Accent</span>
+          <div class="swatches" id="jarColors" role="group" aria-label="Goal accent color"></div>
+        </div>
+        <p class="form-error" id="jarError" role="alert" hidden></p>
+      </div>
+      <div class="sheet__foot">
+        <button type="button" class="btn btn--ghost" data-close="jarDialog">Cancel</button>
+        <button type="submit" class="btn btn--primary" id="jarSubmit">Create goal</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Add / edit contribution -->
+  <dialog id="contributionDialog" class="sheet" aria-labelledby="contributionDialogTitle">
+    <form id="contributionForm" class="sheet__form" novalidate>
+      <div class="sheet__grab" aria-hidden="true"></div>
+      <div class="sheet__head">
+        <div>
+          <h2 id="contributionDialogTitle">Add contribution</h2>
+          <p id="contributionSubtitle"></p>
+        </div>
+        <button type="button" class="icon-btn" data-close="contributionDialog" aria-label="Close">✕</button>
+      </div>
+      <div class="sheet__body">
+        <input type="hidden" id="contributionPersonId">
+        <input type="hidden" id="contributionJarId">
+        <input type="hidden" id="contributionId">
+        <label class="field">
+          <span class="field__label">Amount</span>
+          <span class="money-field">
+            <span class="money-field__symbol" id="contributionCurrency">$</span>
+            <input class="input money-field__input" id="contributionAmount" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="0.00">
+          </span>
+        </label>
+        <label class="field">
+          <span class="field__label">Date</span>
+          <input class="input" id="contributionDate" type="date">
+        </label>
+        <label class="field">
+          <span class="field__label">Note <span class="field__optional">Optional</span></span>
+          <input class="input" id="contributionNote" type="text" maxlength="100" placeholder="e.g. Bonus, birthday money" autocomplete="off">
+        </label>
+        <p class="hint" id="contributionHint" hidden>This entry came from a recurring rule. Editing it only changes this entry — the rule stays the same.</p>
+        <p class="form-error" id="contributionError" role="alert" hidden></p>
+      </div>
+      <div class="sheet__foot sheet__foot--split">
+        <button type="button" class="btn btn--danger-text" id="contributionDelete" hidden>Delete</button>
+        <div class="sheet__foot-right">
+          <button type="button" class="btn btn--ghost" data-close="contributionDialog">Cancel</button>
+          <button type="submit" class="btn btn--primary" id="contributionSubmit">Save</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Add / edit recurring rule -->
+  <dialog id="ruleDialog" class="sheet" aria-labelledby="ruleDialogTitle">
+    <form id="ruleForm" class="sheet__form" novalidate>
+      <div class="sheet__grab" aria-hidden="true"></div>
+      <div class="sheet__head">
+        <div>
+          <h2 id="ruleDialogTitle">New recurring contribution</h2>
+          <p id="ruleSubtitle"></p>
+        </div>
+        <button type="button" class="icon-btn" data-close="ruleDialog" aria-label="Close">✕</button>
+      </div>
+      <div class="sheet__body">
+        <input type="hidden" id="rulePersonId">
+        <input type="hidden" id="ruleJarId">
+        <input type="hidden" id="ruleId">
+        <label class="field">
+          <span class="field__label">Amount each time</span>
+          <span class="money-field">
+            <span class="money-field__symbol" id="ruleCurrency">$</span>
+            <input class="input money-field__input" id="ruleAmount" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="0.00">
+          </span>
+        </label>
+        <label class="field">
+          <span class="field__label">Frequency</span>
+          <select class="input select" id="ruleFrequency">
+            <option value="weekly">Every week</option>
+            <option value="biweekly">Every 2 weeks</option>
+            <option value="monthly">Every month</option>
+          </select>
+        </label>
+        <label class="field" id="ruleWeekdayField">
+          <span class="field__label">Day of the week</span>
+          <select class="input select" id="ruleWeekday">
+            <option value="0">Sunday</option>
+            <option value="1">Monday</option>
+            <option value="2">Tuesday</option>
+            <option value="3">Wednesday</option>
+            <option value="4">Thursday</option>
+            <option value="5">Friday</option>
+            <option value="6">Saturday</option>
+          </select>
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span class="field__label">Start date</span>
+            <input class="input" id="ruleStart" type="date">
+          </label>
+          <label class="field">
+            <span class="field__label">End date <span class="field__optional">Optional</span></span>
+            <input class="input" id="ruleEnd" type="date">
+          </label>
+        </div>
+        <label class="field">
+          <span class="field__label">Note <span class="field__optional">Optional</span></span>
+          <input class="input" id="ruleNote" type="text" maxlength="100" placeholder="e.g. Weekly transfer" autocomplete="off">
+        </label>
+        <label class="check-row">
+          <input type="checkbox" id="ruleActive" checked>
+          <span>
+            <strong>Active</strong>
+            <small>Add contributions automatically when they are due.</small>
+          </span>
+        </label>
+        <p class="hint" id="ruleHint"></p>
+        <p class="form-error" id="ruleError" role="alert" hidden></p>
+      </div>
+      <div class="sheet__foot sheet__foot--split">
+        <button type="button" class="btn btn--danger-text" id="ruleDelete" hidden>Delete rule</button>
+        <div class="sheet__foot-right">
+          <button type="button" class="btn btn--ghost" data-close="ruleDialog">Cancel</button>
+          <button type="submit" class="btn btn--primary" id="ruleSubmit">Save rule</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Set / edit weight goal -->
+  <dialog id="weightGoalDialog" class="sheet" aria-labelledby="weightGoalTitle">
+    <form id="weightGoalForm" class="sheet__form" novalidate>
+      <div class="sheet__grab" aria-hidden="true"></div>
+      <div class="sheet__head">
+        <div>
+          <h2 id="weightGoalTitle">Set a weight goal</h2>
+          <p id="weightGoalSubtitle"></p>
+        </div>
+        <button type="button" class="icon-btn" data-close="weightGoalDialog" aria-label="Close">✕</button>
+      </div>
+      <div class="sheet__body">
+        <input type="hidden" id="weightPersonId">
+        <div class="field-row">
+          <label class="field">
+            <span class="field__label">Starting weight</span>
+            <span class="unit-field">
+              <input class="input" id="weightStart" type="number" inputmode="decimal" min="1" step="0.1" placeholder="0.0">
+              <span class="unit-field__suffix" data-unit>lb</span>
+            </span>
+          </label>
+          <label class="field">
+            <span class="field__label">Goal weight</span>
+            <span class="unit-field">
+              <input class="input" id="weightTarget" type="number" inputmode="decimal" min="1" step="0.1" placeholder="0.0">
+              <span class="unit-field__suffix" data-unit>lb</span>
+            </span>
+          </label>
+        </div>
+        <label class="field">
+          <span class="field__label">Start date</span>
+          <input class="input" id="weightStartDate" type="date">
+        </label>
+        <p class="hint" id="weightDirectionHint"></p>
+        <p class="form-error" id="weightGoalError" role="alert" hidden></p>
+      </div>
+      <div class="sheet__foot sheet__foot--split">
+        <button type="button" class="btn btn--danger-text" id="weightGoalRemove" hidden>Remove goal</button>
+        <div class="sheet__foot-right">
+          <button type="button" class="btn btn--ghost" data-close="weightGoalDialog">Cancel</button>
+          <button type="submit" class="btn btn--primary" id="weightGoalSubmit">Save goal</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Log / edit weigh-in -->
+  <dialog id="weighInDialog" class="sheet" aria-labelledby="weighInTitle">
+    <form id="weighInForm" class="sheet__form" novalidate>
+      <div class="sheet__grab" aria-hidden="true"></div>
+      <div class="sheet__head">
+        <div>
+          <h2 id="weighInTitle">Log a weigh-in</h2>
+          <p id="weighInSubtitle"></p>
+        </div>
+        <button type="button" class="icon-btn" data-close="weighInDialog" aria-label="Close">✕</button>
+      </div>
+      <div class="sheet__body">
+        <input type="hidden" id="weighPersonId">
+        <input type="hidden" id="weighId">
+        <label class="field">
+          <span class="field__label">Weight</span>
+          <span class="unit-field">
+            <input class="input" id="weighValue" type="number" inputmode="decimal" min="1" step="0.1" placeholder="0.0">
+            <span class="unit-field__suffix" data-unit>lb</span>
+          </span>
+        </label>
+        <label class="field">
+          <span class="field__label">Date</span>
+          <input class="input" id="weighDate" type="date">
+        </label>
+        <label class="field">
+          <span class="field__label">Note <span class="field__optional">Optional</span></span>
+          <input class="input" id="weighNote" type="text" maxlength="100" placeholder="e.g. Morning, after walk" autocomplete="off">
+        </label>
+        <p class="form-error" id="weighInError" role="alert" hidden></p>
+      </div>
+      <div class="sheet__foot sheet__foot--split">
+        <button type="button" class="btn btn--danger-text" id="weighDelete" hidden>Delete</button>
+        <div class="sheet__foot-right">
+          <button type="button" class="btn btn--ghost" data-close="weighInDialog">Cancel</button>
+          <button type="submit" class="btn btn--primary" id="weighSubmit">Save weigh-in</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Weight history -->
+  <dialog id="historyDialog" class="sheet" aria-labelledby="historyTitle">
+    <div class="sheet__form">
+      <div class="sheet__grab" aria-hidden="true"></div>
+      <div class="sheet__head">
+        <div>
+          <h2 id="historyTitle">Weight history</h2>
+          <p id="historySubtitle"></p>
+        </div>
+        <button type="button" class="icon-btn" data-close="historyDialog" aria-label="Close">✕</button>
+      </div>
+      <div class="sheet__body" id="historyBody">
+        <div id="historyList"></div>
+      </div>
+      <div class="sheet__foot sheet__foot--split">
+        <button type="button" class="btn btn--ghost" data-close="historyDialog">Close</button>
+        <button type="button" class="btn btn--primary" data-action="log-weight" data-close="historyDialog">Log weigh-in</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Add / edit person -->
+  <dialog id="personDialog" class="sheet" aria-labelledby="personDialogTitle">
+    <form id="personForm" class="sheet__form" novalidate>
+      <div class="sheet__grab" aria-hidden="true"></div>
+      <div class="sheet__head">
+        <div>
+          <h2 id="personDialogTitle">Add a person</h2>
+          <p id="personDialogSubtitle">Each person gets their own goals and weigh-ins.</p>
+        </div>
+        <button type="button" class="icon-btn" data-close="personDialog" aria-label="Close">✕</button>
+      </div>
+      <div class="sheet__body">
+        <input type="hidden" id="personId">
+        <label class="field">
+          <span class="field__label">Name</span>
+          <input class="input" id="personName" type="text" maxlength="40" placeholder="e.g. Ian" autocomplete="off">
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span class="field__label">Savings currency</span>
+            <select class="input select" id="personCurrency"></select>
+          </label>
+          <div class="field">
+            <span class="field__label">Weight unit</span>
+            <div class="theme-seg theme-seg--wide" role="group" aria-label="Weight unit" id="personUnit">
+              <button type="button" data-action="person-unit" data-unit-value="kg" aria-pressed="false">kg</button>
+              <button type="button" data-action="person-unit" data-unit-value="lb" aria-pressed="false">lb</button>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field__label">Accent</span>
+          <div class="swatches" id="personColors" role="group" aria-label="Person accent color"></div>
+        </div>
+        <p class="form-error" id="personError" role="alert" hidden></p>
+      </div>
+      <div class="sheet__foot sheet__foot--split">
+        <button type="button" class="btn btn--danger-text" id="personDelete" hidden>Remove person</button>
+        <div class="sheet__foot-right">
+          <button type="button" class="btn btn--ghost" data-close="personDialog">Cancel</button>
+          <button type="submit" class="btn btn--primary" id="personSubmit">Add person</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Confirmation -->
+  <dialog id="confirmDialog" class="sheet sheet--confirm" aria-labelledby="confirmTitle">
+    <div class="sheet__form">
+      <div class="sheet__grab" aria-hidden="true"></div>
+      <div class="sheet__head">
+        <div>
+          <h2 id="confirmTitle">Are you sure?</h2>
+          <p id="confirmMessage"></p>
+        </div>
+        <button type="button" class="icon-btn" data-close="confirmDialog" aria-label="Close">✕</button>
+      </div>
+      <div class="sheet__foot">
+        <button type="button" class="btn btn--ghost" data-close="confirmDialog">Cancel</button>
+        <button type="button" class="btn btn--danger" id="confirmAccept">Delete</button>
+      </div>
+    </div>
+  </dialog>
+
+  <input type="file" id="importFile" accept="application/json,.json" hidden>
+
+  <div class="toasts" id="toasts" role="status" aria-live="polite" aria-atomic="false"></div>
+
+  <script src="../../shared/auth.js"></script>
+  <script src="js/core.js" defer></script>
+  <script src="js/data.js" defer></script>
+  <script src="js/views.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>

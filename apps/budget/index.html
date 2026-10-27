@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Budget — monthly plan</title>
+  <meta name="description" content="A small, private monthly budget planner with saved pages that runs entirely in your browser.">
+  <meta name="theme-color" content="#143a2a">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="../../shared/gate.css">
+</head>
+<body>
+  <section class="gate" id="budgetGate" aria-label="Unlock Budget">
+    <div id="budgetGateCard"></div>
+  </section>
+
+  <div id="budgetApp" hidden>
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"></span>
+      <h1>Budget</h1>
+    </div>
+    <div class="topbar-actions">
+      <a class="ghost" href="../../index.html">Hub</a>
+      <label class="currency">
+        <span class="sr-only">Currency</span>
+        <select id="currency"></select>
+      </label>
+      <button type="button" class="ghost danger" id="clearPageBtn" title="Clear this page; saved pages stay">Clear page</button>
+      <button type="button" class="ghost" id="budgetLock" title="Lock this device">Lock</button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="sidebar" aria-labelledby="pagesHeading">
+      <div class="sidebar-head">
+        <h2 id="pagesHeading">Saved pages</h2>
+        <span class="page-count" id="pageCount">0</span>
+      </div>
+      <button type="button" class="save-page" id="savePageBtn">+ Save as page</button>
+      <p class="sidebar-hint" id="pagesHint">Save the current budget to keep a version you can reopen.</p>
+      <ul class="page-list" id="pageList" aria-label="Saved budget pages"></ul>
+    </aside>
+
+    <main class="wrap">
+    <section class="summary" id="summary" aria-label="Budget summary">
+      <p class="eyebrow" id="leftoverLabel">Left to budget</p>
+      <p class="big" id="leftover">$0</p>
+      <p class="status" id="status">Add your income to get started.</p>
+
+      <div class="track-meta">
+        <span id="assignedPct">Nothing assigned yet</span>
+        <span id="assignedSum">$0</span>
+      </div>
+      <div class="track" aria-hidden="true">
+        <span class="fill exp" id="barExpenses"></span>
+        <span class="fill sav" id="barSavings"></span>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <p class="k">Monthly income</p>
+          <p class="v" id="sumIncome">$0</p>
+        </div>
+        <div class="stat">
+          <p class="k">Expenses</p>
+          <p class="v" id="sumExpenses">$0</p>
+        </div>
+        <div class="stat">
+          <p class="k">Savings</p>
+          <p class="v" id="sumSavings">$0</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card" aria-labelledby="incomeHeading">
+        <div class="card-head">
+          <h2 id="incomeHeading">Income</h2>
+          <p class="card-total"><span id="incomeTotal">$0</span><span class="unit">/mo</span></p>
+        </div>
+        <div class="rows" id="incomeList"></div>
+        <button type="button" class="add" id="addIncome">+ Add income</button>
+        <p class="hint">Monthly totals use 4 weeks per month, so bi-weekly counts as 2 paychecks.</p>
+      </section>
+
+      <section class="card" aria-labelledby="savingsHeading">
+        <div class="card-head">
+          <h2 id="savingsHeading">Savings</h2>
+          <p class="card-total"><span id="savingsTotal">$0</span><span class="unit">/mo</span></p>
+        </div>
+        <div class="savings-controls">
+          <div class="seg" role="group" aria-label="Savings mode">
+            <button type="button" data-mode="amount" aria-pressed="false">Amount</button>
+            <button type="button" data-mode="percent" aria-pressed="false">Percent</button>
+          </div>
+          <div class="money savings-money">
+            <span class="prefix" id="savPrefix">$</span>
+            <input id="savValue" type="number" min="0" step="1" inputmode="decimal" aria-label="Savings amount">
+            <span class="suffix" id="savSuffix" hidden>%</span>
+          </div>
+        </div>
+        <p class="hint" id="savHint">A share of your monthly income, set aside first.</p>
+      </section>
+    </div>
+
+    <section class="card goal" id="goalCard" aria-labelledby="goalHeading">
+      <div class="card-head">
+        <h2 id="goalHeading">Savings goal</h2>
+        <p class="card-total" id="goalProgress">No goal set</p>
+      </div>
+
+      <div class="goal-inputs">
+        <label class="stack">
+          <span class="stack-label">Current savings</span>
+          <span class="money">
+            <span class="prefix" data-currency>$</span>
+            <input class="field num" id="goalCurrent" type="number" min="0" step="1" inputmode="decimal" placeholder="0" aria-label="Current savings">
+          </span>
+        </label>
+        <label class="stack">
+          <span class="stack-label">Goal amount</span>
+          <span class="money">
+            <span class="prefix" data-currency>$</span>
+            <input class="field num" id="goalTarget" type="number" min="0" step="1" inputmode="decimal" placeholder="0" aria-label="Goal amount">
+          </span>
+        </label>
+        <label class="stack goal-date">
+          <span class="stack-label">Target month</span>
+          <input class="field" id="goalDate" type="month" aria-label="Target month">
+        </label>
+      </div>
+
+      <div class="goal-bar" aria-hidden="true"><span id="goalBar"></span></div>
+
+      <div class="goal-stats">
+        <div>
+          <p class="goal-k">Monthly savings</p>
+          <p class="goal-v" id="goalMonthly">$0</p>
+        </div>
+        <div>
+          <p class="goal-k">Goal reached</p>
+          <p class="goal-v" id="goalReached">—</p>
+        </div>
+        <div>
+          <p class="goal-k" id="goalProjectedLabel">Projected</p>
+          <p class="goal-v" id="goalProjected">—</p>
+        </div>
+      </div>
+
+      <p class="goal-note" id="goalNote">Add your current savings and a target month to project ahead.</p>
+      <p class="hint">Assumes the same saving every month, with no interest.</p>
+    </section>
+
+    <section class="card categories" aria-labelledby="expensesHeading">
+      <div class="card-head">
+        <h2 id="expensesHeading">Expenses</h2>
+        <p class="card-total"><span id="expenseTotal">$0</span><span class="unit">/mo</span></p>
+      </div>
+      <div class="rows" id="categoryList"></div>
+      <button type="button" class="add" id="addCategory">+ Add category</button>
+      <p class="hint">Type an amount — every total updates as you go.</p>
+    </section>
+
+    <footer class="foot">Budget data stays in this browser. The PIN is checked by Supabase.</footer>
+    </main>
+  </div>
+  </div>
+
+  <script src="../../shared/auth.js"></script>
+  <script src="app.js"></script>
+  <script>
+    (() => {
+      const gate = document.getElementById('budgetGate');
+      const card = document.getElementById('budgetGateCard');
+      const app = document.getElementById('budgetApp');
+
+      NorthstarAuth.mountGate({
+        mount: card,
+        eyebrow: 'Northstar budget',
+        title: 'Enter your PIN',
+        subtitle: 'One PIN opens the hub, Goals, and Budget on this device.',
+        setupTitle: 'Create your PIN',
+        setupSubtitle: 'Choose a 6–12 digit PIN. The same PIN opens the hub and Goals.',
+        setupData: {},
+        onUnlock: () => {
+          gate.hidden = true;
+          app.hidden = false;
+        }
+      });
+
+      document.getElementById('budgetLock').addEventListener('click', async () => {
+        const session = NorthstarAuth.getSession();
+        NorthstarAuth.clearSession();
+        if (session && session.token) {
+          try { await NorthstarAuth.signOut(session.token); } catch (error) { /* already gone */ }
+        }
+        window.location.reload();
+      });
+    })();
+  </script>
+</body>
+</html>

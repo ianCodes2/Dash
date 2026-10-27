@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>Apply Kit — Test form</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --paper: #f7f4ed;
+        --paper-deep: #f0ece2;
+        --paper-soft: #fbf9f4;
+        --ink: #24221e;
+        --muted: #7b7468;
+        --line: #e3ddd1;
+        --line-strong: #d0c8b8;
+        --accent: #9a5a2a;
+        --accent-hover: #7f4922;
+        --accent-soft: #f3e7d8;
+        --danger: #b64132;
+        --success: #2f6f5e;
+        --warning: #9a6a20;
+        --field: #fffdf8;
+        --shadow: 0 12px 35px rgba(24, 22, 18, .08);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --paper: #171613; --paper-deep: #1d1b18; --paper-soft: #1b1916;
+          --ink: #f3eee3; --muted: #a49b8d; --line: #312d26; --line-strong: #443e34;
+          --accent: #e0a36b; --accent-hover: #eab27e; --accent-soft: #33281e;
+          --danger: #ef8b7c; --success: #9dcbb8; --warning: #e0b46f;
+          --field: #1d1b18; --shadow: 0 12px 35px rgba(0, 0, 0, .3);
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 90% -10%, rgba(154, 90, 42, .08), transparent 32rem),
+          var(--paper);
+        color: var(--ink);
+        font-family: Aptos, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      button, input, textarea, select { font: inherit; }
+      button { cursor: pointer; }
+      .page { max-width: 1180px; margin: 0 auto; padding: 34px 28px 70px; }
+      .hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+      .eyebrow { margin: 0 0 5px; color: var(--accent); font-size: 10px; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+      h1 { margin: 0; font-size: clamp(28px, 4vw, 42px); font-weight: 680; letter-spacing: -.045em; line-height: 1.05; }
+      .hero p { max-width: 640px; margin: 8px 0 0; color: var(--muted); font-size: 13px; }
+      .actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }
+      .btn { min-height: 34px; padding: 0 12px; border: 1px solid var(--line); border-radius: 9px; color: var(--ink); background: var(--paper-soft); font-size: 12px; font-weight: 650; }
+      .btn:hover { border-color: var(--line-strong); background: var(--paper-deep); }
+      .btn--primary { border-color: var(--accent); color: #fffaf2; background: var(--accent); }
+      .btn--primary:hover { border-color: var(--accent-hover); background: var(--accent-hover); }
+      .layout { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 22px; align-items: start; }
+      .form { display: flex; flex-direction: column; gap: 16px; }
+      .panel { padding: 22px; border: 1px solid var(--line); border-radius: 15px; background: var(--paper-soft); box-shadow: var(--shadow); }
+      .panel h2 { margin: 0; font-size: 17px; font-weight: 660; letter-spacing: -.02em; }
+      .panel > p { margin: 4px 0 17px; color: var(--muted); font-size: 12px; }
+      .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 17px; }
+      .field { min-width: 0; }
+      .field--full { grid-column: 1 / -1; }
+      label, .legend { display: block; margin-bottom: 5px; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+      input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="password"], input[type="search"], input[type="date"], input[type="month"], select, textarea {
+        width: 100%; height: 39px; padding: 0 10px; border: 1px solid var(--line-strong); border-radius: 8px; outline: 0; color: var(--ink); background: var(--field); font-size: 13px;
+      }
+      textarea { height: auto; min-height: 82px; padding: 8px 10px; line-height: 1.45; resize: vertical; }
+      input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(154, 90, 42, .14); }
+      .hint { margin: 4px 0 0; color: var(--muted); font-size: 10px; }
+      .flag { display: inline-block; margin-left: 6px; padding: 1px 5px; border-radius: 999px; color: var(--warning); background: rgba(154, 106, 32, .1); font-size: 8px; font-weight: 750; letter-spacing: .05em; vertical-align: 1px; }
+      fieldset { margin: 0; padding: 0; border: 0; }
+      fieldset label { display: flex; align-items: center; gap: 6px; margin: 0 0 6px; color: var(--ink); font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; }
+      fieldset input { accent-color: var(--accent); }
+      .check-row { display: flex; align-items: flex-start; gap: 8px; margin: 6px 0; color: var(--ink); font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; }
+      .check-row input { margin-top: 3px; accent-color: var(--accent); }
+      .side { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 18px; }
+      .card { padding: 15px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper-soft); box-shadow: var(--shadow); }
+      .card h2 { margin: 0 0 8px; font-size: 11px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+      .result { font-size: 12px; line-height: 1.5; }
+      .result strong { color: var(--success); }
+      .result .bad { color: var(--danger); }
+      .result ul { margin: 6px 0 0; padding-left: 17px; color: var(--muted); }
+      .assertions { display: flex; flex-direction: column; gap: 4px; max-height: 300px; overflow: auto; font-size: 11px; }
+      .assert { display: flex; gap: 6px; line-height: 1.35; }
+      .assert span:first-child { flex: none; width: 13px; font-weight: 750; }
+      .assert.pass { color: var(--success); }
+      .assert.fail { color: var(--danger); }
+      .events { display: flex; flex-direction: column; gap: 4px; max-height: 220px; overflow: auto; font-family: "Cascadia Mono", Consolas, monospace; font-size: 10px; color: var(--muted); }
+      .event { padding: 3px 5px; border-radius: 4px; background: var(--paper-deep); overflow-wrap: anywhere; }
+      .rich { min-height: 78px; padding: 8px 10px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--field); font-size: 13px; }
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+      @media (max-width: 900px) {
+        .hero { display: block; }
+        .actions { justify-content: flex-start; margin-top: 14px; }
+        .layout { grid-template-columns: 1fr; }
+        .side { position: static; }
+      }
+      @media (max-width: 600px) {
+        .page { padding: 24px 16px 50px; }
+        .grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Apply Kit test bench</p>
+          <h1>Job application form</h1>
+          <p>This page is a local stress test for field matching. Run autofill, then check the assertions in the sidebar. Nothing leaves this page.</p>
+        </div>
+        <div class="actions">
+          <button id="runButton" class="btn btn--primary" type="button">Run autofill</button>
+          <button id="overwriteButton" class="btn" type="button">Run overwrite</button>
+          <button id="pickerButton" class="btn" type="button">Picker on Email</button>
+          <button id="resetButton" class="btn" type="button">Reset</button>
+        </div>
+      </header>
+
+      <div class="layout">
+        <form id="testForm" class="form" novalidate>
+          <section class="panel">
+            <h2>Contact</h2>
+            <p>Labels, autocomplete, placeholders, aria-labels, and a combined city/state field.</p>
+            <div class="grid">
+              <div class="field">
+                <label for="firstName">First name</label>
+                <input id="firstName" name="firstName" type="text" autocomplete="given-name" placeholder="Jordan">
+              </div>
+              <div class="field">
+                <label for="lastName">Last name</label>
+                <input id="lastName" name="lastName" type="text" autocomplete="family-name" placeholder="Lee">
+              </div>
+              <div class="field">
+                <label for="email">Email address</label>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+              </div>
+              <div class="field">
+                <label for="confirmEmail">Confirm email <span class="flag">duplicate — expected to stay empty</span></label>
+                <input id="confirmEmail" name="confirmEmail" type="email">
+              </div>
+              <div class="field">
+                <label for="phone">Phone number</label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="(555) 123-4567">
+              </div>
+              <div class="field">
+                <label for="phoneCountry">Country code</label>
+                <input id="phoneCountry" name="phoneCountry" type="tel" placeholder="+1">
+              </div>
+              <div class="field">
+                <label for="address1">Street address</label>
+                <input id="address1" name="address1" type="text" autocomplete="address-line1">
+              </div>
+              <div class="field">
+                <label for="city">City</label>
+                <input id="city" name="city" type="text" autocomplete="address-level2">
+              </div>
+              <div class="field">
+                <label for="state">State</label>
+                <select id="state" name="state" autocomplete="address-level1">
+                  <option value="">Choose…</option>
+                  <option value="CA">California</option>
+                  <option value="IL">Illinois</option>
+                  <option value="NY">New York</option>
+                  <option value="TX">Texas</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="postalCode">ZIP code</label>
+                <input id="postalCode" name="postalCode" type="text" autocomplete="postal-code">
+              </div>
+              <div class="field">
+                <label for="country">Country</label>
+                <select id="country" name="country" autocomplete="country-name">
+                  <option value="">Choose…</option>
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="GB">United Kingdom</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="cityState">City, state</label>
+                <input id="cityState" name="cityState" type="text">
+              </div>
+              <div class="field field--full">
+                <label for="fullName">Full name</label>
+                <input id="fullName" name="fullName" type="text" autocomplete="name">
+              </div>
+              <div class="field">
+                <label for="linkedin">LinkedIn URL</label>
+                <input id="linkedin" name="linkedin" type="url">
+              </div>
+              <div class="field">
+                <label for="portfolio">Portfolio / website</label>
+                <input id="portfolio" name="portfolio" type="url" placeholder="https://…">
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2>Work experience</h2>
+            <p>Current role, previous role, and a duplicate company field that should not be overwritten.</p>
+            <div class="grid">
+              <div class="field">
+                <label for="currentCompany">Company</label>
+                <input id="currentCompany" name="company" type="text">
+              </div>
+              <div class="field">
+                <label for="currentTitle">Job title</label>
+                <input id="currentTitle" name="title" type="text">
+              </div>
+              <div class="field">
+                <label for="currentStartDate">Start date</label>
+                <input id="currentStartDate" name="startDate" type="text" placeholder="2023-04">
+              </div>
+              <div class="field">
+                <label for="currentEndDate">End date</label>
+                <input id="currentEndDate" name="endDate" type="text" placeholder="Present">
+              </div>
+              <div class="field field--full">
+                <label for="currentDescription">Role description</label>
+                <textarea id="currentDescription" name="description"></textarea>
+              </div>
+              <div class="field">
+                <label for="previousCompany">Previous company</label>
+                <input id="previousCompany" name="previousCompany" type="text">
+              </div>
+              <div class="field">
+                <label for="previousTitle">Previous job title</label>
+                <input id="previousTitle" name="previousTitle" type="text">
+              </div>
+              <div class="field">
+                <label for="duplicateCompany">Company <span class="flag">duplicate — expected to stay empty</span></label>
+                <input id="duplicateCompany" name="company3" type="text">
+              </div>
+              <div class="field">
+                <label for="sponsorshipDetails">If yes, please explain your sponsorship needs</label>
+                <textarea id="sponsorshipDetails" name="sponsorshipDetails"></textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2>Education</h2>
+            <div class="grid">
+              <div class="field">
+                <label for="school">School</label>
+                <input id="school" name="school" type="text">
+              </div>
+              <div class="field">
+                <label for="degree">Degree</label>
+                <input id="degree" name="degree" type="text">
+              </div>
+              <div class="field">
+                <label for="major">Field of study</label>
+                <input id="major" name="major" type="text">
+              </div>
+              <div class="field">
+                <label for="graduationDate">Graduation date</label>
+                <input id="graduationDate" name="graduationDate" type="month">
+              </div>
+              <div class="field">
+                <label for="gpa">GPA</label>
+                <input id="gpa" name="gpa" type="text">
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2>Eligibility</h2>
+            <p>Selects and radios with full-sentence options, not just “Yes” and “No”.</p>
+            <div class="grid">
+              <div class="field">
+                <label for="workAuthorization">Are you legally authorized to work?</label>
+                <select id="workAuthorization" name="workAuthorization">
+                  <option value="">Choose…</option>
+                  <option value="yes-auth">Yes, I am authorized to work in the United States</option>
+                  <option value="no-auth">No, I am not authorized to work in the United States</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="requireSponsorship">Will you require visa sponsorship?</label>
+                <select id="requireSponsorship" name="requireSponsorship">
+                  <option value="">Choose…</option>
+                  <option value="no-sponsor">No, I do not require sponsorship</option>
+                  <option value="yes-sponsor">Yes, I require sponsorship</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="availableStartDate">When can you start?</label>
+                <input id="availableStartDate" name="availableStartDate" type="text">
+              </div>
+              <div class="field">
+                <label for="noticePeriod">Notice period</label>
+                <input id="noticePeriod" name="noticePeriod" type="text">
+              </div>
+              <fieldset class="field field--full">
+                <legend class="legend">Are you willing to relocate?</legend>
+                <label><input type="radio" name="relocation" value="yes-relocate"> Yes, I am willing to relocate</label>
+                <label><input type="radio" name="relocation" value="no-relocate"> No, I am not willing to relocate</label>
+              </fieldset>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2>Open-ended answers</h2>
+            <div class="grid">
+              <div class="field field--full">
+                <label for="coverLetter">Cover letter</label>
+                <textarea id="coverLetter" name="coverLetter"></textarea>
+              </div>
+              <div class="field field--full">
+                <label for="whyCompany">Why do you want to work here?</label>
+                <textarea id="whyCompany" name="whyCompany"></textarea>
+              </div>
+              <div class="field field--full">
+                <label for="summary">Professional summary</label>
+                <textarea id="summary" name="summary"></textarea>
+              </div>
+              <div class="field field--full">
+                <label for="hearAbout">How did you hear about us?</label>
+                <input id="hearAbout" name="hearAbout" type="text">
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2>Sensitive fields</h2>
+            <p>These should fill because sensitive filling is on. Turn it off in the extension to see them skipped.</p>
+            <div class="grid">
+              <div class="field">
+                <label for="dateOfBirth">Date of birth</label>
+                <input id="dateOfBirth" name="dateOfBirth" type="date">
+              </div>
+              <div class="field">
+                <label for="ssn">Social Security number</label>
+                <input id="ssn" name="ssn" type="text">
+              </div>
+              <div class="field">
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender">
+                  <option value="">Choose…</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Non-binary">Non-binary</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="raceEthnicity">Race / ethnicity</label>
+                <select id="raceEthnicity" name="raceEthnicity">
+                  <option value="">Choose…</option>
+                  <option value="Asian">Asian</option>
+                  <option value="Black or African American">Black or African American</option>
+                  <option value="Hispanic or Latino">Hispanic or Latino</option>
+                  <option value="White">White</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="veteranStatus">Veteran status</label>
+                <select id="veteranStatus" name="veteranStatus">
+                  <option value="">Choose…</option>
+                  <option value="I am a protected veteran">I am a protected veteran</option>
+                  <option value="I am not a protected veteran">I am not a protected veteran</option>
+                  <option value="I prefer not to answer">I prefer not to answer</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="disabilityStatus">Disability status</label>
+                <select id="disabilityStatus" name="disabilityStatus">
+                  <option value="">Choose…</option>
+                  <option value="Yes, I have a disability">Yes, I have a disability</option>
+                  <option value="No, I do not have a disability">No, I do not have a disability</option>
+                  <option value="I prefer not to answer">I prefer not to answer</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="desiredSalary">Desired salary</label>
+                <input id="desiredSalary" name="desiredSalary" type="text">
+              </div>
+              <div class="field">
+                <label for="currentSalary">Current salary</label>
+                <input id="currentSalary" name="currentSalary" type="text">
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2>Distractors</h2>
+            <p>These should be skipped: passwords, search, usernames, consent, hidden, disabled, read-only, and file inputs.</p>
+            <div class="grid">
+              <div class="field">
+                <label for="searchJobs">Search jobs <span class="flag">skip</span></label>
+                <input id="searchJobs" name="search" type="search">
+              </div>
+              <div class="field">
+                <label for="username">Username <span class="flag">skip</span></label>
+                <input id="username" name="username" type="text">
+              </div>
+              <div class="field">
+                <label for="password">Password <span class="flag">skip</span></label>
+                <input id="password" name="password" type="password">
+              </div>
+              <div class="field">
+                <label for="confirmPassword">Confirm password <span class="flag">skip</span></label>
+                <input id="confirmPassword" name="confirmPassword" type="password">
+              </div>
+              <div class="field">
+                <label for="disabledEmail">Disabled email <span class="flag">skip</span></label>
+                <input id="disabledEmail" name="disabledEmail" type="email" disabled>
+              </div>
+              <div class="field">
+                <label for="readonlyEmail">Read-only email <span class="flag">skip</span></label>
+                <input id="readonlyEmail" name="readonlyEmail" type="email" value="readonly@example.com" readonly>
+              </div>
+              <div class="field field--full">
+                <label class="check-row"><input id="consent" type="checkbox"> I agree to the terms and privacy policy <span class="flag">skip</span></label>
+              </div>
+              <div class="field field--full">
+                <label for="resume">Resume / CV <span class="flag">manual</span></label>
+                <input id="resume" name="resume" type="file" accept=".pdf,.doc,.docx">
+              </div>
+              <input id="hiddenEmail" name="hiddenEmail" type="hidden" value="hidden@example.com">
+            </div>
+          </section>
+        </form>
+
+        <aside class="side">
+          <section class="card">
+            <h2>Result</h2>
+            <div id="result" class="result">Run autofill to see the summary.</div>
+          </section>
+          <section class="card">
+            <h2>Assertions</h2>
+            <div id="assertions" class="assertions">No assertions yet.</div>
+          </section>
+          <section class="card">
+            <h2>Events</h2>
+            <div id="events" class="events">Input and change events will appear here.</div>
+          </section>
+        </aside>
+      </div>
+    </div>
+
+    <script src="schema.js"></script>
+    <script src="rules.js"></script>
+    <script src="picker.js"></script>
+    <script src="content.js"></script>
+    <script>
+      const sampleProfile = {
+        firstName: "Jordan",
+        middleName: "A.",
+        lastName: "Lee",
+        preferredName: "Jo",
+        pronouns: "they/them",
+        email: "jordan.lee@example.com",
+        phone: "(555) 123-4567",
+        phoneCountry: "+1",
+        address1: "123 Main St",
+        address2: "Apt 4B",
+        city: "Chicago",
+        state: "IL",
+        postalCode: "60601",
+        country: "US",
+        linkedin: "https://linkedin.com/in/jordanlee",
+        github: "https://github.com/jordanlee",
+        portfolio: "https://jordanlee.dev",
+        currentCompany: "Acme Inc.",
+        currentTitle: "Product Designer",
+        currentStartDate: "2023-04",
+        currentEndDate: "Present",
+        currentLocation: "Chicago, IL / Remote",
+        currentDescription: "Designs clear, useful products for busy people.",
+        previousCompany: "Beta Co.",
+        previousTitle: "UX Designer",
+        previousStartDate: "2020-01",
+        previousEndDate: "2023-03",
+        school: "University of Illinois",
+        degree: "B.S.",
+        major: "Computer Science",
+        graduationDate: "2020-05",
+        gpa: "3.8",
+        workAuthorization: "Yes",
+        requireSponsorship: "No",
+        willingToRelocate: "Yes",
+        availableStartDate: "2 weeks from offer",
+        noticePeriod: "2 weeks",
+        summary: "Product designer with a background in research and systems thinking.",
+        coverLetter: "I build thoughtful products and enjoy working with teams that care about the details.",
+        whyCompany: "I have followed your work for years and want to help shape the next chapter.",
+        strengths: "Research, systems thinking, and clear communication.",
+        weaknesses: "I can over-polish; I am learning to ship earlier.",
+        dateOfBirth: "1995-08-14",
+        ssn: "123-45-6789",
+        gender: "Non-binary",
+        raceEthnicity: "Asian",
+        veteranStatus: "I am not a protected veteran",
+        disabilityStatus: "No, I do not have a disability",
+        desiredSalary: "$120,000",
+        currentSalary: "$105,000",
+        customAnswers: [
+          {
+            label: "How did you hear about us?",
+            keywords: "hear, source, referral",
+            value: "A friend referred me."
+          }
+        ]
+      };
+
+      const form = document.getElementById("testForm");
+      const resultEl = document.getElementById("result");
+      const assertionsEl = document.getElementById("assertions");
+      const eventsEl = document.getElementById("events");
+      const eventLog = [];
+
+      form.addEventListener("input", (event) => {
+        eventLog.push({ type: "input", id: event.target.id || event.target.name, value: event.target.value });
+        renderEvents();
+      });
+      form.addEventListener("change", (event) => {
+        eventLog.push({ type: "change", id: event.target.id || event.target.name, value: event.target.value });
+        renderEvents();
+      });
+
+      function renderEvents() {
+        if (!eventLog.length) {
+          eventsEl.textContent = "Input and change events will appear here.";
+          return;
+        }
+        eventsEl.replaceChildren();
+        for (const item of eventLog.slice(-16).reverse()) {
+          const row = document.createElement("div");
+          row.className = "event";
+          row.textContent = `${item.type} · ${item.id || "(no id)"} · ${String(item.value).slice(0, 70)}`;
+          eventsEl.appendChild(row);
+        }
+      }
+
+      function resetForm() {
+        form.reset();
+        eventLog.length = 0;
+        renderEvents();
+        resultEl.textContent = "Run autofill to see the summary.";
+        assertionsEl.textContent = "No assertions yet.";
+        window.ApplyKitUI?.closeToast();
+        window.ApplyKitUI?.closePicker(false);
+      }
+
+      function renderResult(result) {
+        resultEl.replaceChildren();
+        const summary = document.createElement("div");
+        summary.innerHTML = `<strong>${result.filled} filled</strong> · ${result.skipped} skipped · ${result.sensitiveSkipped} sensitive skipped`;
+        resultEl.appendChild(summary);
+        if (result.fileInputs) {
+          const file = document.createElement("div");
+          file.textContent = `${result.fileInputs} file input${result.fileInputs === 1 ? "" : "s"} left for manual upload.`;
+          resultEl.appendChild(file);
+        }
+        if (result.unmatched?.length) {
+          const list = document.createElement("ul");
+          for (const label of result.unmatched) {
+            const item = document.createElement("li");
+            item.textContent = label;
+            list.appendChild(item);
+          }
+          resultEl.appendChild(list);
+        }
+      }
+
+      function value(id) {
+        const el = document.getElementById(id);
+        if (!el) return "(missing)";
+        return el.value ?? "";
+      }
+
+      function checkedRadio(name) {
+        return form.querySelector(`input[type="radio"][name="${name}"]:checked`)?.value || "";
+      }
+
+      function report() {
+        const expected = {
+          firstName: "Jordan",
+          lastName: "Lee",
+          email: "jordan.lee@example.com",
+          phone: "(555) 123-4567",
+          phoneCountry: "+1",
+          address1: "123 Main St",
+          city: "Chicago",
+          state: "IL",
+          postalCode: "60601",
+          country: "US",
+          cityState: "Chicago, IL",
+          fullName: "Jordan A. Lee",
+          linkedin: "https://linkedin.com/in/jordanlee",
+          portfolio: "https://jordanlee.dev",
+          currentCompany: "Acme Inc.",
+          currentTitle: "Product Designer",
+          currentStartDate: "2023-04",
+          currentEndDate: "Present",
+          currentDescription: "Designs clear, useful products for busy people.",
+          previousCompany: "Beta Co.",
+          previousTitle: "UX Designer",
+          school: "University of Illinois",
+          degree: "B.S.",
+          major: "Computer Science",
+          graduationDate: "2020-05",
+          gpa: "3.8",
+          workAuthorization: "yes-auth",
+          requireSponsorship: "no-sponsor",
+          relocation: "yes-relocate",
+          availableStartDate: "2 weeks from offer",
+          noticePeriod: "2 weeks",
+          coverLetter: "I build thoughtful products and enjoy working with teams that care about the details.",
+          whyCompany: "I have followed your work for years and want to help shape the next chapter.",
+          summary: "Product designer with a background in research and systems thinking.",
+          hearAbout: "A friend referred me.",
+          dateOfBirth: "1995-08-14",
+          ssn: "123-45-6789",
+          gender: "Non-binary",
+          raceEthnicity: "Asian",
+          veteranStatus: "I am not a protected veteran",
+          disabilityStatus: "No, I do not have a disability",
+          desiredSalary: "$120,000",
+          currentSalary: "$105,000"
+        };
+
+        const emptyExpected = [
+          "confirmEmail",
+          "duplicateCompany",
+          "sponsorshipDetails",
+          "searchJobs",
+          "username",
+          "password",
+          "confirmPassword",
+          "disabledEmail",
+          "consent"
+        ];
+
+        const checks = [];
+        for (const [id, expectedValue] of Object.entries(expected)) {
+          const actual = id === "relocation" ? checkedRadio("relocation") : value(id);
+          checks.push({
+            name: id,
+            pass: actual === expectedValue,
+            actual: actual || "(empty)",
+            expected: expectedValue
+          });
+        }
+
+        for (const id of emptyExpected) {
+          const actual = id === "consent"
+            ? document.getElementById(id).checked
+            : value(id);
+          const pass = id === "consent" ? actual === false : actual === "";
+          checks.push({ name: id, pass, actual: String(actual || "(empty)"), expected: "(unchanged)" });
+        }
+
+        checks.push({
+          name: "readonlyEmail",
+          pass: value("readonlyEmail") === "readonly@example.com",
+          actual: value("readonlyEmail"),
+          expected: "readonly@example.com"
+        });
+        checks.push({
+          name: "hiddenEmail",
+          pass: value("hiddenEmail") === "hidden@example.com",
+          actual: value("hiddenEmail"),
+          expected: "hidden@example.com"
+        });
+        checks.push({
+          name: "resumeFile",
+          pass: document.getElementById("resume").files.length === 0,
+          actual: String(document.getElementById("resume").files.length),
+          expected: "0"
+        });
+        checks.push({
+          name: "input-events-fired",
+          pass: eventLog.some((item) => item.type === "input"),
+          actual: String(eventLog.filter((item) => item.type === "input").length),
+          expected: "> 0"
+        });
+        checks.push({
+          name: "change-events-fired",
+          pass: eventLog.some((item) => item.type === "change"),
+          actual: String(eventLog.filter((item) => item.type === "change").length),
+          expected: "> 0"
+        });
+
+        const failures = checks.filter((check) => !check.pass);
+        assertionsEl.replaceChildren();
+        for (const check of checks) {
+          const row = document.createElement("div");
+          row.className = `assert ${check.pass ? "pass" : "fail"}`;
+          const mark = document.createElement("span");
+          mark.textContent = check.pass ? "✓" : "×";
+          const text = document.createElement("span");
+          text.textContent = check.pass
+            ? check.name
+            : `${check.name}: got ${check.actual}, expected ${check.expected}`;
+          row.append(mark, text);
+          assertionsEl.appendChild(row);
+        }
+
+        return {
+          passed: checks.length - failures.length,
+          total: checks.length,
+          failures
+        };
+      }
+
+      function run({ overwrite = false, reset = true } = {}) {
+        if (reset) resetForm();
+        const result = window.__applyKit.fillPage(sampleProfile, {
+          onlyEmpty: !overwrite,
+          fillSensitive: true
+        });
+        renderResult(result);
+        const checks = report();
+        if (checks.failures.length) {
+          const note = document.createElement("div");
+          note.className = "bad";
+          note.textContent = `${checks.passed}/${checks.total} assertions passed.`;
+          resultEl.appendChild(note);
+        }
+        return { result, checks };
+      }
+
+      document.getElementById("runButton").addEventListener("click", () => run());
+      document.getElementById("overwriteButton").addEventListener("click", () => run({ overwrite: true, reset: true }));
+      document.getElementById("resetButton").addEventListener("click", resetForm);
+      document.getElementById("pickerButton").addEventListener("click", () => {
+        const email = document.getElementById("email");
+        email.focus();
+        window.__applyKit.showPicker(sampleProfile, { onlyEmpty: true, fillSensitive: true });
+      });
+
+      window.__applyKitTest = {
+        run,
+        report,
+        reset: resetForm,
+        sampleProfile
+      };
+    </script>
+  </body>
+</html>

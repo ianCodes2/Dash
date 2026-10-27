@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>Line Notes</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="app">
+      <header class="bar">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <path d="M5 7h14M5 12h14M5 17h9"></path>
+            </svg>
+          </span>
+          <div class="brand__text">
+            <h1>Line Notes</h1>
+            <p>Daily scratchpad</p>
+          </div>
+        </div>
+        <div class="actions">
+          <span id="saveState" class="save-state" data-state="loading">
+            <span class="save-state__dot" aria-hidden="true"></span>
+            <span id="saveText">Loading…</span>
+          </span>
+          <button id="exportButton" class="icon-btn" type="button" title="Download notes" aria-label="Download notes" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3v12"></path>
+              <path d="m7 10 5 5 5-5"></path>
+              <path d="M5 21h14"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <textarea
+        id="notes"
+        class="notes"
+        spellcheck="true"
+        placeholder="Start typing…"
+        aria-label="Notes"
+      ></textarea>
+
+      <footer class="foot">
+        <span class="foot__hint"><kbd>Alt</kbd><span>+</span><kbd>M</kbd><span>to open</span></span>
+        <span class="foot__hint foot__hint--muted">Auto-saves locally</span>
+      </footer>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Northstar — Private hub</title>
+  <meta name="description" content="A small private hub for savings goals, weight goals, and monthly budgets.">
+  <meta name="theme-color" content="#f5f3ee">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Northstar">
+  <link rel="icon" href="apps/goals/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apps/goals/icon-180.png">
+  <link rel="stylesheet" href="apps/goals/styles.css">
+  <link rel="stylesheet" href="shared/gate.css">
+  <link rel="stylesheet" href="hub.css">
+  <script>
+    (() => {
+      try {
+        const raw = localStorage.getItem('northstar.theme.v1');
+        let choice = raw || 'system';
+        const dark = choice === 'dark' || (choice === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      } catch (error) { /* storage unavailable */ }
+    })();
+  </script>
+</head>
+<body class="hub-body">
+  <a class="skip-link" href="#hub">Skip to apps</a>
+
+  <section class="gate" id="gate" aria-label="Unlock Northstar">
+    <div id="gateCard"></div>
+  </section>
+
+  <div class="hub" id="hub" hidden>
+    <header class="hub__bar">
+      <a class="hub__brand" href="./" aria-label="Northstar hub">
+        <span class="hub__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1.8c.4 3.9 1.4 6.6 3.5 8.7 2.1 2.1 4.8 3.1 8.7 3.5-3.9.4-6.6 1.4-8.7 3.5-2.1 2.1-3.1 4.8-3.5 8.7-.4-3.9-1.4-6.6-3.5-8.7-2.1-2.1-4.8-3.1-8.7-3.5 3.9-.4 6.6-1.4 8.7-3.5C10.6 8.4 11.6 5.7 12 1.8Z"/>
+          </svg>
+        </span>
+        <span class="hub__brand-text">
+          <strong>Northstar</strong>
+          <small>Private hub</small>
+        </span>
+      </a>
+      <div class="hub__bar-actions">
+        <button class="icon-btn hub__lock" id="hubLock" type="button" aria-label="Lock this device">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="4" y="10" width="16" height="11" rx="2.5"/>
+            <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+            <path d="M12 15v2"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="hub__main" id="hubMain">
+      <section class="hub__intro">
+        <p class="hub__eyebrow">Everything in one place</p>
+        <h1 class="hub__title">Small tools for the things you're building.</h1>
+        <p class="hub__sub">Goals, money, and photos. Private by default, synced when you want it.</p>
+      </section>
+
+      <nav class="hub__apps" aria-label="Apps">
+        <a class="hub-card hub-card--goals" href="apps/goals/">
+          <span class="hub-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 3h8"/><path d="M9 3v3M15 3v3"/><path d="M7 6h10a2 2 0 0 1 2 2v10a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8a2 2 0 0 1 2-2Z"/><path d="M5 11h14"/>
+            </svg>
+          </span>
+          <span class="hub-card__body">
+            <span class="hub-card__name">Goals</span>
+            <span class="hub-card__desc">Savings goals and weight goals for each person, with recurring deposits and a weekly trend.</span>
+            <span class="hub-card__meta">Ian &amp; Caca · synced with Supabase</span>
+          </span>
+          <span class="hub-card__go" aria-hidden="true">→</span>
+        </a>
+
+        <a class="hub-card hub-card--budget" href="apps/budget/">
+          <span class="hub-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="15" rx="2.5"/><path d="M3 10h18"/><path d="M7 15h4"/>
+            </svg>
+          </span>
+          <span class="hub-card__body">
+            <span class="hub-card__name">Budget</span>
+            <span class="hub-card__desc">Monthly income, expenses, savings, and saved budget pages.</span>
+            <span class="hub-card__meta">Planner · saved in this browser</span>
+          </span>
+          <span class="hub-card__go" aria-hidden="true">→</span>
+        </a>
+
+        <a class="hub-card hub-card--photos" href="tools/photo-pages/">
+          <span class="hub-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="9" r="1.6"/><path d="m4 17 5-4 4 3 3-2 4 3"/>
+            </svg>
+          </span>
+          <span class="hub-card__body">
+            <span class="hub-card__name">Photo Pages</span>
+            <span class="hub-card__desc">Turn a photo selection into framed A4 PDF pages.</span>
+            <span class="hub-card__meta">Local tool · runs on your computer</span>
+          </span>
+          <span class="hub-card__go" aria-hidden="true">→</span>
+        </a>
+      </nav>
+
+      <section class="hub__note">
+        <h2>How the PIN works</h2>
+        <p>One shared PIN, checked by your Supabase project, unlocks the hub, Goals, and Budget. Change it inside Goals → Settings. Budget keeps its numbers in this browser; Photo Pages is a local tool and does not use the PIN.</p>
+      </section>
+    </main>
+
+    <footer class="hub__foot">
+      <span>Northstar · private by default</span>
+      <span>Shared PIN · Supabase</span>
+    </footer>
+  </div>
+
+  <noscript>
+    <div class="hub__noscript">Northstar needs JavaScript enabled to unlock.</div>
+  </noscript>
+
+  <script src="shared/auth.js"></script>
+  <script>
+    (() => {
+      const gate = document.getElementById('gate');
+      const card = document.getElementById('gateCard');
+      const hub = document.getElementById('hub');
+
+      NorthstarAuth.mountGate({
+        mount: card,
+        eyebrow: 'Northstar hub',
+        title: 'Enter your PIN',
+        subtitle: 'One PIN opens the hub, Goals, and Budget on this device.',
+        setupTitle: 'Create your PIN',
+        setupSubtitle: 'Choose a 6–12 digit PIN. It protects the hub, Goals, and Budget on every device.',
+        setupData: () => {
+          try {
+            const raw = localStorage.getItem('northstar.data.v1');
+            const parsed = raw ? JSON.parse(raw) : null;
+            if (parsed && parsed.people) return parsed;
+          } catch (error) { /* fall through */ }
+          return {};
+        },
+        onUnlock: () => {
+          gate.hidden = true;
+          hub.hidden = false;
+          document.title = 'Northstar — Private hub';
+        }
+      });
+
+      document.getElementById('hubLock').addEventListener('click', async () => {
+        const session = NorthstarAuth.getSession();
+        NorthstarAuth.clearSession();
+        if (session && session.token) {
+          try { await NorthstarAuth.signOut(session.token); } catch (error) { /* already gone */ }
+        }
+        window.location.reload();
+      });
+    })();
+  </script>
+</body>
+</html>

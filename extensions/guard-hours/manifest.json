@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Guard Hours",
+  "version": "1.0.0",
+  "description": "Calculate guard shift hours from CCTV times, breaks, and early leave, then convert to payroll hundredths.",
+  "permissions": [
+    "storage",
+    "clipboardWrite"
+  ],
+  "action": {
+    "default_title": "Guard Hours",
+    "default_popup": "calculator.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png",
+    "512": "icons/icon512.png"
+  }
+}

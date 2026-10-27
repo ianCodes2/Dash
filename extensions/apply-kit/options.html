@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>Apply Kit — Your profile</title>
+    <link rel="stylesheet" href="options.css">
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6.5 3.5h7l4 4v13h-11z"></path>
+              <path d="M13.5 3.5v5h4"></path>
+              <path d="m9 14 2 2 3.5-4"></path>
+            </svg>
+          </span>
+          <div class="brand__text">
+            <strong>Apply Kit</strong>
+            <span>Application profile</span>
+          </div>
+        </div>
+
+        <nav id="sectionNav" class="nav" aria-label="Profile sections"></nav>
+
+        <div class="sidebar__foot">
+          <p>Stored only in this Chrome profile. No account, no server, no tracking.</p>
+          <span class="local-pill"><span class="local-pill__dot" aria-hidden="true"></span> Local only</span>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div class="topbar__title">
+            <p class="eyebrow">Your details</p>
+            <h1>Apply once. Reuse everywhere.</h1>
+          </div>
+          <div class="topbar__actions">
+            <span id="saveState" class="save-state" data-state="saved" role="status" aria-live="polite">
+              <span class="save-state__dot" aria-hidden="true"></span>
+              <span id="saveStateText">Saved locally</span>
+            </span>
+            <button id="exportButton" class="btn btn--ghost" type="button">Export</button>
+            <button id="importButton" class="btn btn--ghost" type="button">Import</button>
+            <input id="importFile" type="file" accept="application/json,.json" hidden>
+            <button id="clearButton" class="btn btn--danger" type="button">Clear</button>
+          </div>
+        </header>
+
+        <section class="intro">
+          <div>
+            <h2>Keep the answers you type over and over.</h2>
+            <p>Fill a job application with one click, or click any field and use the picker shortcut for a manual override.</p>
+          </div>
+          <div class="intro__meta">
+            <span id="completion">0 of 0 details saved</span>
+            <span>Autosaves as you type</span>
+          </div>
+        </section>
+
+        <form id="profileForm" novalidate>
+          <div id="sections"></div>
+
+          <section id="customPanel" class="panel">
+            <div class="panel__head">
+              <div>
+                <h2>Custom answers</h2>
+                <p>Reusable answers for questions that aren’t in the standard list. Keywords help the matcher find the right box.</p>
+              </div>
+              <span class="panel__badge">Optional</span>
+            </div>
+            <div id="customList" class="custom-list"></div>
+            <button id="addCustomButton" class="btn btn--secondary" type="button">+ Add custom answer</button>
+          </section>
+
+          <section id="settingsPanel" class="panel">
+            <div class="panel__head">
+              <div>
+                <h2>Fill settings</h2>
+                <p>These apply to the “Fill this page” action and the keyboard shortcut.</p>
+              </div>
+            </div>
+            <div class="setting">
+              <label class="setting__row">
+                <input id="onlyEmpty" type="checkbox" class="check">
+                <span>
+                  <strong>Only fill empty fields</strong>
+                  <span>Leave anything you’ve already typed alone. You can turn this off when you deliberately want to overwrite a form.</span>
+                </span>
+              </label>
+            </div>
+            <div class="setting">
+              <label class="setting__row">
+                <input id="fillSensitive" type="checkbox" class="check">
+                <span>
+                  <strong>Include sensitive fields</strong>
+                  <span>SSN, date of birth, salary, gender, race, veteran status, and disability status. These values are stored locally and can also be picked manually.</span>
+                </span>
+              </label>
+            </div>
+          </section>
+        </form>
+
+        <footer class="foot">
+          <div class="foot__links">
+            <button id="shortcutsButton" class="link-button" type="button">Change keyboard shortcuts</button>
+            <span aria-hidden="true">·</span>
+            <button id="testFormButton" class="link-button" type="button">Open test form</button>
+          </div>
+          <p>Apply Kit never uploads your profile. File inputs such as résumés are left for you to attach manually.</p>
+        </footer>
+      </main>
+    </div>
+
+    <script src="schema.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

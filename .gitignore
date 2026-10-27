@@ -1,0 +1,16 @@
+# Local-only files that should not be published
+_archive/
+
+# Photo Pages runtime data and dependencies
+tools/photo-pages/node_modules/
+tools/photo-pages/data/
+tools/photo-pages/*.log
+
+# Build/transfer artifacts
+*.zip
+*.7z
+
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini

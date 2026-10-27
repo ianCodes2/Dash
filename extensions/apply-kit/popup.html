@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>Apply Kit</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="app">
+      <header class="bar">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6.5 3.5h7l4 4v13h-11z"></path>
+              <path d="M13.5 3.5v5h4"></path>
+              <path d="m9 14 2 2 3.5-4"></path>
+            </svg>
+          </span>
+          <div class="brand__text">
+            <h1>Apply Kit</h1>
+            <p>Job applications, prefilled.</p>
+          </div>
+        </div>
+        <button id="editButton" class="icon-btn" type="button" title="Edit your profile" aria-label="Edit your profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+          </svg>
+        </button>
+      </header>
+
+      <section class="main">
+        <div class="profile">
+          <span id="avatar" class="avatar" aria-hidden="true">AK</span>
+          <div class="profile__text">
+            <strong id="profileName" title="Your profile">Your profile</strong>
+            <span id="profileMeta">0 of 0 details saved</span>
+          </div>
+          <span id="profileBadge" class="profile__badge">Local</span>
+        </div>
+        <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+        <button id="fillButton" class="fill-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 7h10"></path>
+            <path d="M4 12h7"></path>
+            <path d="M4 17h10"></path>
+            <path d="m16 15 2 2 4-4"></path>
+          </svg>
+          <span id="fillButtonText">Fill this page</span>
+        </button>
+
+        <div class="status-row">
+          <span id="status" class="status" data-state="idle" role="status" aria-live="polite">
+            <span class="status__dot" aria-hidden="true"></span>
+            <span id="statusText">Ready. Open a job application.</span>
+          </span>
+        </div>
+
+        <div class="picker-card">
+          <div class="picker-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 6h16"></path>
+              <path d="M4 12h10"></path>
+              <path d="M4 18h7"></path>
+              <path d="m17 15 2 2 4-4"></path>
+            </svg>
+          </div>
+          <div class="picker-card__text">
+            <strong>Pick a value</strong>
+            <span>Click any field, then press</span>
+          </div>
+          <div class="keys" aria-label="Alt plus Shift plus A">
+            <kbd>Alt</kbd><span>+</span><kbd>Shift</kbd><span>+</span><kbd>A</kbd>
+          </div>
+        </div>
+
+        <div class="settings">
+          <label class="switch-row">
+            <input id="onlyEmpty" type="checkbox">
+            <span class="switch" aria-hidden="true"></span>
+            <span class="switch-row__text">Only fill empty fields</span>
+          </label>
+          <label class="switch-row">
+            <input id="fillSensitive" type="checkbox">
+            <span class="switch" aria-hidden="true"></span>
+            <span class="switch-row__text">Include sensitive fields</span>
+          </label>
+        </div>
+      </section>
+
+      <footer class="foot">
+        <span>No account · no network</span>
+        <span class="foot__shortcut"><kbd>Alt</kbd><span>+</span><kbd>Shift</kbd><span>+</span><kbd>F</kbd> to fill</span>
+      </footer>
+    </main>
+    <script src="schema.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

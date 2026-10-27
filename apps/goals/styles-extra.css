@@ -1,0 +1,386 @@
+/* ============================================================
+   Northstar Goals — hub-era additions
+   Loaded after styles.css. Covers the app nav, shared person
+   switcher, quick add, weight page head, sync banner, and the
+   newer settings rows.
+   ============================================================ */
+
+/* ---------- App bar navigation ---------- */
+.appnav {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex: none;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface-2) 72%, transparent);
+}
+
+.appnav__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 9px;
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 680;
+  letter-spacing: -.01em;
+  transition: background-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.appnav__link:hover {
+  color: var(--ink);
+}
+.appnav__link[aria-current="page"] {
+  color: var(--ink);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+.appnav__icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+}
+.appnav__icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Keep the bar compact on phones: icons only until there is room. */
+.appnav__link > span:not(.appnav__icon) {
+  display: none;
+}
+.appnav__link {
+  padding-inline: 11px;
+}
+
+.appbar__sub {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding: 0 16px 10px;
+}
+.appbar__sub:empty {
+  display: none;
+}
+.appbar__sub .person-switch {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* ---------- Shared person switcher ---------- */
+.person-switch {
+  align-items: stretch;
+}
+.person-switch__option {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.person-switch__option > span:not(.person-switch__avatar) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.person-switch__add {
+  flex: 0 0 46px;
+  min-height: 44px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px dashed var(--line-strong);
+  border-radius: 12px;
+  color: var(--muted);
+  transition: color .15s ease, border-color .15s ease, background-color .15s ease;
+}
+.person-switch__add:hover {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line-strong));
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.person-switch__add svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---------- Sync banner ---------- */
+.sync-banner {
+  width: calc(100% - 32px);
+  max-width: 1088px;
+  margin: 12px auto 0;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  border: 1px solid color-mix(in srgb, #d97706 26%, var(--line));
+  border-radius: 14px;
+  background: color-mix(in srgb, #f59e0b 9%, var(--surface));
+  color: color-mix(in srgb, #92400e 78%, var(--ink));
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+[data-theme="dark"] .sync-banner {
+  border-color: color-mix(in srgb, #f59e0b 34%, var(--line));
+  background: color-mix(in srgb, #f59e0b 11%, var(--surface));
+  color: #fcd34d;
+}
+.sync-banner__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+/* ---------- Quick add ---------- */
+.quick-add {
+  margin-bottom: 24px;
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+.quick-add__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.quick-add__head h2 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 730;
+  letter-spacing: -.025em;
+}
+.quick-add__head p {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 10.5px;
+  line-height: 1.45;
+}
+.quick-add__form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin-top: 12px;
+}
+.quick-field {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.quick-field > span:first-child {
+  color: var(--muted);
+  font-size: 9.5px;
+  font-weight: 720;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.quick-field--goal,
+.quick-field--note {
+  grid-column: 1 / -1;
+}
+.quick-add__submit {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-top: 1px;
+}
+.quick-add .form-error {
+  margin-top: 9px;
+}
+
+/* ---------- Weight page head ---------- */
+.page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+  padding-top: 2px;
+}
+.page-head__eyebrow {
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.page-head__title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 750;
+  line-height: 1.05;
+  letter-spacing: -.045em;
+}
+.page-head__sub {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 10.5px;
+}
+.unit-toggle {
+  display: inline-flex;
+  flex: none;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--surface-2);
+}
+.unit-toggle button {
+  min-width: 40px;
+  min-height: 32px;
+  padding: 0 9px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  transition: background-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.unit-toggle button[aria-pressed="true"] {
+  color: var(--ink);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------- Goal card extras ---------- */
+.jar-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 9.5px;
+  line-height: 1.35;
+}
+.jar-hero__pace {
+  display: inline-block;
+  margin-top: 9px;
+  padding: 4px 9px;
+  border: 1px solid color-mix(in srgb, var(--jar-color) 24%, var(--line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--jar-color) 8%, transparent);
+  color: color-mix(in srgb, var(--jar-color) 72%, var(--ink));
+  font-size: 10px;
+  font-weight: 650;
+}
+[data-theme="dark"] .jar-hero__pace {
+  border-color: color-mix(in srgb, var(--jar-color) 38%, var(--line));
+  background: color-mix(in srgb, var(--jar-color) 14%, transparent);
+  color: color-mix(in srgb, var(--jar-color) 55%, var(--ink));
+}
+
+/* ---------- Settings extras ---------- */
+.settings-card__head--row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.settings-card__head--row > .btn {
+  flex: none;
+  margin-top: 1px;
+}
+.person-settings__identity {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.person-settings__tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  flex: none;
+  margin-left: auto;
+}
+.person-settings__tools .icon-btn {
+  width: 36px;
+  height: 36px;
+}
+.pin-form {
+  display: grid;
+  gap: 9px;
+  padding: 0 15px 15px;
+}
+.pin-form .settings-actions {
+  padding: 2px 0 0;
+}
+.theme-seg--wide {
+  display: flex;
+  width: 100%;
+}
+.theme-seg--wide button {
+  flex: 1;
+}
+
+/* ---------- Footer links ---------- */
+.appfoot__links {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ---------- Wider screens ---------- */
+@media (max-width: 340px) {
+  .brand__text {
+    display: none;
+  }
+}
+
+@media (min-width: 560px) {
+  .appnav__link > span:not(.appnav__icon) {
+    display: inline;
+  }
+  .appnav__link {
+    padding-inline: 11px;
+  }
+  .quick-add {
+    padding: 17px;
+  }
+  .quick-add__form {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .quick-field--goal,
+  .quick-field--note {
+    grid-column: auto;
+  }
+  .quick-add__submit {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 640px) {
+  .appbar__sub {
+    padding-inline: 24px;
+    padding-bottom: 12px;
+  }
+  .appnav__link {
+    min-height: 36px;
+    padding-inline: 13px;
+    font-size: 12px;
+  }
+  .page-head__title {
+    font-size: 30px;
+  }
+  .quick-add {
+    margin-bottom: 28px;
+  }
+  .quick-add__head h2 {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 900px) {
+  .appbar__sub .person-switch {
+    width: 100%;
+  }
+  .page-head {
+    margin-bottom: 16px;
+  }
+}

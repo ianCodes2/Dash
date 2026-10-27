@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Photo Pages</title>
+    <meta name="description" content="A tiny local photo library for downloading photo grids as PDFs." />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <rect x="3" y="3" width="8" height="8" rx="1.5" />
+            <rect x="13" y="3" width="8" height="8" rx="1.5" />
+            <rect x="3" y="13" width="8" height="8" rx="1.5" />
+            <rect x="13" y="13" width="8" height="8" rx="1.5" />
+          </svg>
+        </span>
+        <div>
+          <h1>Photo Pages</h1>
+          <p>Pick photos. Choose a grid. Download a PDF.</p>
+        </div>
+      </div>
+      <div class="library-stat" id="library-stat">No photos yet</div>
+    </header>
+
+    <main class="layout">
+      <section class="library" aria-labelledby="library-heading">
+        <div class="library-head">
+          <div>
+            <h2 id="library-heading">Your photos</h2>
+            <p class="muted" id="library-summary">Sorted by the date inside each photo.</p>
+          </div>
+          <div class="library-tools">
+            <label class="inline-field">
+              <span>Year</span>
+              <select id="year-filter">
+                <option value="">All</option>
+              </select>
+            </label>
+            <button type="button" class="btn ghost" id="select-all">Select all shown</button>
+            <button type="button" class="btn ghost" id="clear-selection">Unselect all</button>
+            <div class="menu-wrap">
+              <button
+                type="button"
+                class="btn ghost"
+                id="delete-menu-button"
+                aria-haspopup="menu"
+                aria-expanded="false"
+                aria-controls="delete-menu"
+              >
+                Delete <span aria-hidden="true">▾</span>
+              </button>
+              <div class="menu" id="delete-menu" role="menu" aria-labelledby="delete-menu-button" hidden>
+                <button type="button" class="menu-item" role="menuitem" data-delete="selected">
+                  Delete selected photos
+                </button>
+                <button type="button" class="menu-item danger" role="menuitem" data-delete="all">
+                  Delete all photos
+                </button>
+                <p class="menu-note">
+                  Removes them from Photo Pages only. Your original files on this PC stay where they
+                  are.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="selection-hint">
+          Drag across photos to select a group. Hold <kbd>Ctrl</kbd> while dragging or clicking to add more.
+        </p>
+
+        <div class="dropzone" id="dropzone">
+          <input type="file" id="file-input" accept="image/*" multiple hidden />
+          <div class="dropzone-copy">
+            <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M12 16V4m0 0L7 9m5-5 5 5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke-linecap="round" />
+            </svg>
+            <div>
+              <strong>Drop photos here</strong>
+              <span class="muted">or <button type="button" class="link" id="browse">choose images</button></span>
+            </div>
+          </div>
+          <div class="upload-state" id="upload-state" hidden>
+            <div class="upload-bar"><span id="upload-bar-fill"></span></div>
+            <span id="upload-label">Uploading…</span>
+          </div>
+        </div>
+
+        <div id="gallery" class="gallery"></div>
+
+        <div class="empty" id="empty-state" hidden>
+          <h3>No photos yet</h3>
+          <p>Upload a few pictures. Dates come from each photo's metadata when it has them.</p>
+        </div>
+      </section>
+
+      <aside class="print-panel" aria-labelledby="print-heading">
+        <div class="toolbar">
+          <div class="toolbar-heading">
+            <h2 id="print-heading">Pages</h2>
+            <span class="page-summary" id="page-summary">0 selected</span>
+          </div>
+
+          <details class="settings" id="settings-panel">
+            <summary>
+              <span class="settings-label">Export settings</span>
+              <span class="settings-current" id="settings-current">6 per page · 2 × 3</span>
+            </summary>
+
+            <div class="settings-body">
+              <label class="field">
+                <span>Title at the top of every page</span>
+                <input
+                  type="text"
+                  id="title-input"
+                  maxlength="120"
+                  placeholder="e.g. Our trip to the coast"
+                  autocomplete="off"
+                />
+              </label>
+
+              <div class="toolbar-row">
+                <label class="field">
+                  <span>Grid</span>
+                  <select id="grid-select">
+                    <option value="1x1">1 per page · 1 × 1</option>
+                    <option value="2x1">2 per page · 2 × 1</option>
+                    <option value="1x2">2 per page · 1 × 2</option>
+                    <option value="2x2">4 per page · 2 × 2</option>
+                    <option value="3x2">6 per page · 3 × 2</option>
+                    <option value="2x3" selected>6 per page · 2 × 3</option>
+                    <option value="3x3">9 per page · 3 × 3</option>
+                    <option value="4x3">12 per page · 4 × 3</option>
+                    <option value="3x4">12 per page · 3 × 4</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Download</span>
+                  <select id="download-scope">
+                    <option value="all">All pages</option>
+                    <option value="range">Choose pages</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="toolbar-row" id="page-range-row" hidden>
+                <label class="field">
+                  <span>Page numbers</span>
+                  <input
+                    type="text"
+                    id="page-range"
+                    placeholder="e.g. 1-3, 5"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                </label>
+              </div>
+              <p class="range-error" id="page-range-hint" hidden></p>
+
+              <label class="check-field">
+                <input type="checkbox" id="footnote-toggle" />
+                <span>Add page footnote <span class="muted">— e.g. “2026 trip page 1/4”</span></span>
+              </label>
+
+              <p class="hint">Each photo sits above its capture date. A subset keeps the full set's page numbers.</p>
+            </div>
+          </details>
+
+          <button type="button" class="btn primary download-button" id="download-button" disabled>Download PDF</button>
+        </div>
+
+        <div class="pages" id="pages" aria-live="polite"></div>
+      </aside>
+    </main>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

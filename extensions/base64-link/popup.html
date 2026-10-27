@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>Base64 Link</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="app">
+      <header class="bar">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.5 13.5a4.5 4.5 0 0 0 6.36.36l2.5-2.5a4.5 4.5 0 0 0-6.36-6.36l-1.5 1.5"></path>
+              <path d="M13.5 10.5a4.5 4.5 0 0 0-6.36-.36l-2.5 2.5a4.5 4.5 0 0 0 6.36 6.36l1.5-1.5"></path>
+            </svg>
+          </span>
+          <div class="brand__text">
+            <h1>Base64 Link</h1>
+            <p>Decode, copy, open.</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="main">
+        <label class="field-label" for="value">Base64 or link</label>
+        <div class="field-row">
+          <input
+            id="value"
+            class="value"
+            type="text"
+            placeholder="Paste Base64 here…"
+            spellcheck="false"
+            autocomplete="off"
+            autocapitalize="off"
+            aria-describedby="status"
+          >
+          <button id="copyButton" class="btn btn--secondary" type="button" title="Copy the field contents" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>Copy</span>
+          </button>
+          <button id="openButton" class="btn btn--primary" type="button" title="Open this link in a new tab" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 3h7v7"></path>
+              <path d="M10 14 21 3"></path>
+              <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+            </svg>
+            <span>Open</span>
+          </button>
+        </div>
+
+        <div class="status-row">
+          <span id="status" class="status" data-state="idle">
+            <span class="status__dot" aria-hidden="true"></span>
+            <span id="statusText">Paste Base64 or type and press Enter.</span>
+          </span>
+          <span class="hint"><kbd>Enter</kbd> to decode</span>
+        </div>
+      </section>
+
+      <footer class="foot">
+        <span>Decodes locally</span>
+        <span>http(s) links only</span>
+      </footer>
+      <span id="announcer" class="sr-only" aria-live="polite" aria-atomic="true"></span>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>
