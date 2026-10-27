@@ -1,6 +1,11 @@
 /* ============================================================
    Northstar shared PIN gate
    ============================================================ */
+.auth[hidden],
+.gate[hidden] {
+  display: none !important;
+}
+
 .auth,
 .gate {
   min-height: 100dvh;

@@ -1,5 +1,5 @@
 /* Northstar offline shell */
-const CACHE_NAME = 'northstar-v7';
+const CACHE_NAME = 'northstar-v8';
 const APP_SHELL = [
   './',
   './index.html',
